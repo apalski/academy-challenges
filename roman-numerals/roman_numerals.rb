@@ -1,58 +1,88 @@
+
 class Integer
-  def to_roman
-    # tens = self / 10
-    # fives = self % 10 / 5
-    # singles = (self % 10) - 5
-
-    # case self
-    # when (1..3) then roman_times("I", self)
-    # when 4 then 'IV'
-    # when 5 then 'V'
-    # when (6..8) then 'V' + roman_times("I", (self - 5))
-    # when 9 then 'IX'
-    # else
-    #   [
-    #     roman_times("X", tens),
-    #     roman_times("V", fives),
-    #     roman_times("I", singles)
-    #   ].join
-    # end
-
-    # **think how to use part of the number, and its remainder**
-    
-    # multiply by number to get roman
-    # fix higher numbers with different roman values
-    destructured(self).map do |num|
-      LEGEND[num]
-    end.join
-  end
-
-  def destructured(number)
-    number.to_s.chars
-  end
-
-  def roman_times(sign, number)
-    sign * number
-  end
-
-  LEGEND = {
+	LEGEND = {
     "1" => "I",
-    "2" => "II",
-    "3" => "III",
-    "4" => "IV",
     "5" => "V",
-    "6" => "VI",
-    "7" => "VII",
-    "8" => "VIII",
     "9" => "IX",
     "10" => "X",
-    "40" => "XL",
     "50" => "L",
-  }
-end
+    "100" => "C",
+    "500" => "D",
+    "1000" => "M",
+  	}
 
-# how many 'X's
-# how many 'L's
-# how many 'C's
-# how many 'D's
-# how many 'M's
+  	Roman_array = []
+
+  def one_to_three_to_roman(digit, index)
+	if index == 0
+		Roman_array << (LEGEND["1"] * digit.to_i)
+	elsif index == 1
+		Roman_array << (LEGEND["10"] * digit.to_i)
+	elsif index == 2
+		Roman_array << (LEGEND["100"] * digit.to_i)
+	elsif index == 3
+		Roman_array << (LEGEND["1000"] * digit.to_i)
+	end
+  end
+
+  def four_to_roman(digit, index)
+  	if index == 0
+		Roman_array << LEGEND["1"] + LEGEND["5"]
+	elsif index == 1
+		Roman_array << LEGEND["10"]	+ LEGEND["50"]
+	elsif index == 2
+		Roman_array << LEGEND["100"] + LEGEND["500"]
+	end
+  end
+
+  def five_to_roman(digit, index)
+  	if index == 0
+		Roman_array << LEGEND["5"]
+	elsif index == 1
+		Roman_array << LEGEND["50"]
+	elsif index == 2
+		Roman_array << LEGEND["500"]
+	end
+  end
+
+  def six_to_eight_to_roman(digit, index)
+  	if index == 0
+		Roman_array << LEGEND["5"] + (LEGEND["1"] * (digit.to_i - 5))
+	elsif index == 1
+		Roman_array << LEGEND["50"] + (LEGEND["10"] * (digit.to_i - 5))
+	elsif index == 2
+		Roman_array << LEGEND["500"] + (LEGEND["100"] * (digit.to_i - 5))
+	end
+  end
+
+  def nine_to_roman(digit, index)
+  	if index == 0
+		Roman_array << LEGEND["1"] + LEGEND["10"]
+	elsif index == 1
+		Roman_array << LEGEND["10"] + LEGEND["100"]
+	elsif index == 2
+		Roman_array << LEGEND["100"] + LEGEND["1000"]
+	end
+  end
+
+  def to_roman
+    Roman_array.clear
+  	integer_array = self.to_s.chars.reverse
+  	integer_array.each_with_index do |num, i|
+  		if num == "0"
+  			# do nothing
+  		elsif ("1".."3").include?(num)
+  			one_to_three_to_roman(num, i)
+  		elsif num == "4"
+  			four_to_roman(num, i)
+		elsif num == "5"
+			five_to_roman(num, i)
+		elsif ("6".."8").include?(num)
+			six_to_eight_to_roman(num, i)
+		elsif num == "9"
+			nine_to_roman(num, i)
+		end
+  	end
+  	  	Roman_array.reverse.join
+  end
+end
