@@ -12,6 +12,27 @@ class Integer
   	}
 
   Roman_array = []
+	
+  def to_roman
+    Roman_array.clear
+	integer_array = self.to_s.chars.reverse
+	integer_array.each_with_index do |num, i|
+		if num == "0"
+			# do nothing
+		elsif ("1".."3").include?(num)
+			one_to_three_to_roman(num, i)
+		elsif num == "4"
+			four_to_roman(num, i)
+		elsif num == "5"
+			five_to_roman(num, i)
+		elsif ("6".."8").include?(num)
+			six_to_eight_to_roman(num, i)
+		elsif num == "9"
+			nine_to_roman(num, i)
+		end
+	end
+    Roman_array.reverse.join
+  end	
 
   def one_to_three_to_roman(digit, index)
 	if index == 0
@@ -29,7 +50,7 @@ class Integer
   	if index == 0
 		Roman_array << LEGEND["1"] + LEGEND["5"]
 	elsif index == 1
-		Roman_array << LEGEND["10"]	+ LEGEND["50"]
+		Roman_array << LEGEND["10"] + LEGEND["50"]
 	elsif index == 2
 		Roman_array << LEGEND["100"] + LEGEND["500"]
 	end
@@ -64,25 +85,8 @@ class Integer
 		Roman_array << LEGEND["100"] + LEGEND["1000"]
 	end
   end
+end
 
-  def to_roman
-    Roman_array.clear
-  	integer_array = self.to_s.chars.reverse
-  	integer_array.each_with_index do |num, i|
-  		if num == "0"
-  			# do nothing
-  		elsif ("1".."3").include?(num)
-  			one_to_three_to_roman(num, i)
-  		elsif num == "4"
-  			four_to_roman(num, i)
-		elsif num == "5"
-			five_to_roman(num, i)
-		elsif ("6".."8").include?(num)
-			six_to_eight_to_roman(num, i)
-		elsif num == "9"
-			nine_to_roman(num, i)
-		end
-  	end
-  	Roman_array.reverse.join
-  end
+module BookKeeping
+    VERSION = 2
 end
