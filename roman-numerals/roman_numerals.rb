@@ -15,7 +15,7 @@ class Integer
 
   def to_roman
     Roman_array.clear
-    integer_array = destructured(self).reverse
+    integer_array = destructured(self)
     integer_array.each_with_index do |num, i|
 	if num == "0"
 		# do nothing
@@ -35,7 +35,7 @@ class Integer
   end
 
   def destructured(number)
-    number.to_s.chars
+    number.to_s.chars.reverse
   end
 
   def one_to_three_to_roman(digit, index)
